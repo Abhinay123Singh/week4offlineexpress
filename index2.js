@@ -1,71 +1,31 @@
 const express = require("express");
+// Create a hospital app
 const app = express();
-const users=[{
-    name:"Abhinay",
-    kidney:[{
-        healthy:false
-    }]
 
-}];
-app.use(express.json());
- app.get("/",function(req,res){
-    // write klogic
-    const Abhinaykidney=users[0].kidney;
-    const numberofkidney=Abhinaykidney.length;
-     let numberofhealthykidney =0;
-     for(let i=0;i<Abhinaykidney.length;i++)
-     {
-        if(Abhinaykidney[i].healthy)
-        {
-            numberofhealthykidney=numberofhealthykidney+1;
-        }
-     }
-     const numberofUnhealthykidney = numberofkidney-numberofhealthykidney;
-     res.json({
-    
-        numberofkidney,
-        numberofhealthykidney,
-        numberofUnhealthykidney
-     })
- })
-  app.post("/",function(req,res)
-{
-   // const n=req.query.n;
-   // console.log(req.body);
-    const ishealthy = req.body.ishealthy;
-    users[0].kidney.push({
-        healthy : ishealthy
-    })
-    res.json({
-        msg:"Done!"
-    })
-})
- app.put("/",function(req,res)
- {
-    for(let i=0;i<users[0].kidney.length;i++)
-    {
-        users[0].kidney[i].healthy=true;
- }
- res.json({});
-})
-app.delete("/",function(req,res)
-{
-    const newkidney=[];
-    for(let i=0;i<users[0].kidney.length;i++)
-    {
-        if(users[0].kidney[i].healthy)
-        {
-            newkidney.push({
-                healthy:true
-            })
+// Function to calculate the sum from 1 to n
+function sum(n) {
+    let ans = 0;
+    for (let i = 1; i <= n; i++) {
+        ans = ans + i;
+    }
+    return ans;
+}
 
-        }
+// Define a route for the root URL
+app.get("/", function (req, res) {
+    const n = parseInt(req.query.n, 10); // Parse n as an integer
+
+    // Check if n is a valid number
+    if (isNaN(n) || n < 1) {
+        return res.send("Please provide a valid positive number for n.");
     }
 
-    users[0].kidney=newkidney;
-    res.json({
-        msg:"All Unhealthy kidneys removed"
-    })
-})
-app.listen(3000);
-    
+    const ans = sum(n);
+    res.send("Hi, your answer is " + ans);
+});
+
+// Listen on a specific port
+const PORT = 3000; // You can change the port number if needed
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
